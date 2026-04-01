@@ -6,20 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('sports_centers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('manager_id')->constrained('users')->onDelete('cascade');
+            $table->string('name');
+            $table->string('city');
+            $table->string('address');
+            $table->text('description')->nullable();
+            $table->string('phone')->nullable();
+            $table->time('opening_time')->nullable();
+            $table->time('closing_time')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('approved');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('sports_centers');
