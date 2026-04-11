@@ -13,7 +13,7 @@ class DashboardController extends Controller
         }
 
         if ($role === 'manager') {
-            return view('dashboard.manager');
+            return redirect()->route('manager.dashboard');
         }
 
         return view('dashboard.user');
