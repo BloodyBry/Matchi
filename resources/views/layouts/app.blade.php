@@ -26,7 +26,15 @@
         <div>
             @if(session()->has('user_id'))
                 <a href="/dashboard">Dashboard</a>
+
+                @if(session('user_role') === 'manager')
+                    <a href="{{ route('manager.center.index') }}">Mes centres</a>
+                    <a href="{{ route('manager.fields.index') }}">Mes terrains</a>
+                    <a href="{{ route('manager.reservations.index') }}">Réservations</a>
+                @endif
+
                 <a href="/my-reservations">Mes réservations</a>
+
                 <form action="/logout" method="POST" style="display:inline;">
                     @csrf
                     <button type="submit" class="btn">Logout</button>
