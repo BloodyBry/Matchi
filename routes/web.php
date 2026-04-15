@@ -13,6 +13,12 @@ use App\Http\Controllers\Manager\FieldController as ManagerFieldController;
 use App\Http\Controllers\Manager\FieldScheduleController;
 use App\Http\Controllers\Manager\ReservationController as ManagerReservationController;
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SportsCenterController as AdminSportsCenterController;
+use App\Http\Controllers\Admin\SportController as AdminSportController;
+use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
+
 Route::get('/', function () {
     return view('home');
 });
@@ -57,4 +63,26 @@ Route::middleware(['check.auth', 'check.role:manager'])->prefix('manager')->name
     Route::post('/schedules/{id}/delete', [FieldScheduleController::class, 'destroy'])->name('schedules.delete');
 
     Route::get('/reservations', [ManagerReservationController::class, 'index'])->name('reservations.index');
+});
+
+
+Route::middleware(['check.auth', 'check.role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::post('/users/{id}/status', [AdminUserController::class, 'updateStatus'])->name('users.status');
+    Route::post('/users/{id}/delete', [AdminUserController::class, 'destroy'])->name('users.delete');
+
+    Route::get('/centers', [AdminSportsCenterController::class, 'index'])->name('centers.index');
+    Route::post('/centers/{id}/status', [AdminSportsCenterController::class, 'updateStatus'])->name('centers.status');
+    Route::post('/centers/{id}/delete', [AdminSportsCenterController::class, 'destroy'])->name('centers.delete');
+
+    Route::get('/sports', [AdminSportController::class, 'index'])->name('sports.index');
+    Route::get('/sports/create', [AdminSportController::class, 'create'])->name('sports.create');
+    Route::post('/sports/store', [AdminSportController::class, 'store'])->name('sports.store');
+    Route::get('/sports/{id}/edit', [AdminSportController::class, 'edit'])->name('sports.edit');
+    Route::post('/sports/{id}/update', [AdminSportController::class, 'update'])->name('sports.update');
+    Route::post('/sports/{id}/delete', [AdminSportController::class, 'destroy'])->name('sports.delete');
+
+    Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
 });
