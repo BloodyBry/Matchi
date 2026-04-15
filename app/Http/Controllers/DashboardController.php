@@ -9,7 +9,7 @@ class DashboardController extends Controller
         $role = session('user_role');
 
         if ($role === 'admin') {
-            return view('dashboard.admin');
+            return redirect()->route('admin.dashboard');
         }
 
         if ($role === 'manager') {
