@@ -33,6 +33,13 @@
                     <a href="{{ route('manager.reservations.index') }}">Réservations</a>
                 @endif
 
+                @if(session('user_role') === 'admin')
+                    <a href="{{ route('admin.users.index') }}">Utilisateurs</a>
+                    <a href="{{ route('admin.centers.index') }}">Centres</a>
+                    <a href="{{ route('admin.sports.index') }}">Sports</a>
+                    <a href="{{ route('admin.reservations.index') }}">Réservations</a>
+                @endif
+
                 <a href="/my-reservations">Mes réservations</a>
 
                 <form action="/logout" method="POST" style="display:inline;">

@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\SportsCenterController as AdminSportsCenterContro
 use App\Http\Controllers\Admin\SportController as AdminSportController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
 
+use App\Http\Controllers\ReviewController;
+
 Route::get('/', function () {
     return view('home');
 });
@@ -39,6 +41,10 @@ Route::middleware('check.auth')->group(function () {
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::get('/my-reservations', [ReservationController::class, 'myReservations'])->name('reservations.my');
     Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+
+    Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/reviews/{id}/update', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::post('/reviews/{id}/delete', [ReviewController::class, 'destroy'])->name('reviews.delete');
 });
 
 
