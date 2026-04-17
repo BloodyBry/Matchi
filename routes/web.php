@@ -34,6 +34,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/fields', [FieldController::class, 'index'])->name('fields.index');
 Route::get('/fields/{id}', [FieldController::class, 'show'])->name('fields.show');
+Route::get('/fields/{id}/available-slots', [FieldController::class, 'availableSlots'])->name('fields.availableSlots');
 
 Route::middleware('check.auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

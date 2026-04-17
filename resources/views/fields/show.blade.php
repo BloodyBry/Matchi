@@ -9,6 +9,7 @@
     <p><strong>Sport :</strong> {{ $field->sport->name }}</p>
     <p><strong>Prix/heure :</strong> {{ $field->price_per_hour }} MAD</p>
     <p><strong>Description :</strong> {{ $field->description }}</p>
+    <p><strong>Statut :</strong> {{ $field->status }}</p>
 
     @php
         $averageRating = $field->reviews->count() > 0 ? round($field->reviews->avg('rating'), 1) : null;
@@ -18,36 +19,63 @@
 </div>
 
 <div class="card">
-    <h3>Horaires</h3>
+    <h3>Horaires du terrain</h3>
+
     @forelse($field->schedules as $schedule)
-        <p>{{ $schedule->day_of_week }} : {{ $schedule->start_time }} - {{ $schedule->end_time }}</p>
+        <p>
+            <strong>{{ ucfirst($schedule->day_of_week) }}</strong> :
+            {{ \Carbon\Carbon::createFromFormat('H:i:s', $schedule->start_time)->format('H:i') }}
+            -
+            {{ \Carbon\Carbon::createFromFormat('H:i:s', $schedule->end_time)->format('H:i') }}
+            ({{ $schedule->is_open ? 'Ouvert' : 'Fermé' }})
+        </p>
     @empty
         <p>Aucun horaire défini.</p>
     @endforelse
 </div>
 
-@if(session()->has('user_id'))
+@if(session()->has('user_id') && session('user_role') === 'user')
 <div class="card">
-    <h3>Réserver ce terrain</h3>
+    <h3>Choisir une date</h3>
 
-    <form action="{{ route('reservations.store') }}" method="POST">
-        @csrf
-        <input type="hidden" name="field_id" value="{{ $field->id }}">
+    @if($field->status !== 'available')
+        <p style="color:red;"><strong>Ce terrain est actuellement indisponible.</strong></p>
+    @else
+        <form action="{{ route('fields.availableSlots', $field->id) }}" method="GET">
+            <label>Date</label>
+            <input type="date" name="reservation_date" min="{{ date('Y-m-d') }}" value="{{ $selectedDate ?? '' }}">
+            <button type="submit" class="btn">Voir les créneaux disponibles</button>
+        </form>
+    @endif
+</div>
+@endif
 
-        <label>Date</label>
-        <input type="date" name="reservation_date">
+@if(isset($availableSlots))
+<div class="card">
+    <h3>Créneaux disponibles pour le {{ $selectedDate }}</h3>
 
-        <label>Heure de début</label>
-        <input type="time" name="start_time">
+    @if(count($availableSlots) > 0)
+        @foreach($availableSlots as $slot)
+            <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                <p><strong>{{ $slot['start_time'] }} - {{ $slot['end_time'] }}</strong></p>
 
-        <label>Heure de fin</label>
-        <input type="time" name="end_time">
+                <form action="{{ route('reservations.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="field_id" value="{{ $field->id }}">
+                    <input type="hidden" name="reservation_date" value="{{ $selectedDate }}">
+                    <input type="hidden" name="start_time" value="{{ $slot['start_time'] }}">
+                    <input type="hidden" name="end_time" value="{{ $slot['end_time'] }}">
 
-        <label>Notes</label>
-        <textarea name="notes"></textarea>
+                    <label>Notes (optionnel)</label>
+                    <textarea name="notes"></textarea>
 
-        <button type="submit" class="btn">Réserver</button>
-    </form>
+                    <button type="submit" class="btn">Réserver ce créneau</button>
+                </form>
+            </div>
+        @endforeach
+    @else
+        <p>Aucun créneau disponible pour cette date.</p>
+    @endif
 </div>
 @endif
 
