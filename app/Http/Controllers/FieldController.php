@@ -34,7 +34,12 @@ class FieldController extends Controller
     {
         $field = Field::with(['center', 'sport', 'schedules', 'reviews.user'])->findOrFail($id);
 
-        return view('fields.show', compact('field'));
+        $openDays = $field->schedules
+            ->where('is_open', true)
+            ->pluck('day_of_week')
+            ->toArray();
+
+        return view('fields.show', compact('field', 'openDays'));
     }
 
     public function availableSlots(Request $request, $id)

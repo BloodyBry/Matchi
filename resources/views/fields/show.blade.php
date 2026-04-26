@@ -15,7 +15,10 @@
         $averageRating = $field->reviews->count() > 0 ? round($field->reviews->avg('rating'), 1) : null;
     @endphp
 
-    <p><strong>Note moyenne :</strong> {{ $averageRating ? $averageRating . '/5' : 'Pas encore noté' }}</p>
+    <p>
+        <strong>Note moyenne :</strong>
+        {{ $averageRating ? $averageRating . '/5' : 'Pas encore noté' }}
+    </p>
 </div>
 
 <div class="card">
@@ -39,11 +42,33 @@
     <h3>Choisir une date</h3>
 
     @if($field->status !== 'available')
-        <p style="color:red;"><strong>Ce terrain est actuellement indisponible.</strong></p>
+        <p style="color:red;">
+            <strong>Ce terrain est actuellement indisponible.</strong>
+        </p>
     @else
+        <p>
+            <strong>Jours disponibles :</strong>
+            @if(!empty($openDays))
+                @foreach($openDays as $day)
+                    <span style="background:#2563eb;color:white;padding:5px 10px;border-radius:5px;margin-right:5px;">
+                        {{ ucfirst($day) }}
+                    </span>
+                @endforeach
+            @else
+                Aucun jour disponible
+            @endif
+        </p>
+
         <form action="{{ route('fields.availableSlots', $field->id) }}" method="GET">
             <label>Date</label>
-            <input type="date" name="reservation_date" min="{{ date('Y-m-d') }}" value="{{ $selectedDate ?? '' }}">
+            <input
+                type="date"
+                id="reservation_date"
+                name="reservation_date"
+                min="{{ date('Y-m-d') }}"
+                value="{{ $selectedDate ?? '' }}"
+            >
+
             <button type="submit" class="btn">Voir les créneaux disponibles</button>
         </form>
     @endif
@@ -57,10 +82,13 @@
     @if(count($availableSlots) > 0)
         @foreach($availableSlots as $slot)
             <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
-                <p><strong>{{ $slot['start_time'] }} - {{ $slot['end_time'] }}</strong></p>
+                <p>
+                    <strong>{{ $slot['start_time'] }} - {{ $slot['end_time'] }}</strong>
+                </p>
 
                 <form action="{{ route('reservations.store') }}" method="POST">
                     @csrf
+
                     <input type="hidden" name="field_id" value="{{ $field->id }}">
                     <input type="hidden" name="reservation_date" value="{{ $selectedDate }}">
                     <input type="hidden" name="start_time" value="{{ $slot['start_time'] }}">
@@ -90,6 +118,7 @@
         @if(!$myReview)
             <form action="{{ route('reviews.store') }}" method="POST">
                 @csrf
+
                 <input type="hidden" name="field_id" value="{{ $field->id }}">
 
                 <label>Note</label>
@@ -106,7 +135,11 @@
 
                 <button type="submit" class="btn">Ajouter un avis</button>
             </form>
+        @else
+            <p>Vous avez déjà laissé un avis sur ce terrain.</p>
         @endif
+    @else
+        <p>Connectez-vous pour laisser un avis.</p>
     @endif
 </div>
 
@@ -119,6 +152,7 @@
                 <strong>{{ $review->user->first_name }} {{ $review->user->last_name }}</strong>
                 - Note : {{ $review->rating }}/5
             </p>
+
             <p>{{ $review->comment }}</p>
 
             @if(session('user_id') == $review->user_id)
@@ -152,4 +186,29 @@
         <p>Aucun avis pour le moment.</p>
     @endforelse
 </div>
+
+<script>
+    const openDays = {!! json_encode($openDays ?? []) !!};
+
+    const input = document.getElementById('reservation_date');
+
+    if (input) {
+        input.addEventListener('change', function () {
+            const selectedDate = new Date(this.value);
+
+            if (!this.value) {
+                return;
+            }
+
+            const day = selectedDate
+                .toLocaleDateString('en-US', { weekday: 'long' })
+                .toLowerCase();
+
+            if (!openDays.includes(day)) {
+                alert("Ce terrain est fermé ce jour-là !");
+                this.value = "";
+            }
+        });
+    }
+</script>
 @endsection
