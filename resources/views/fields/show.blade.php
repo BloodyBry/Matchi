@@ -83,7 +83,9 @@
         @foreach($availableSlots as $slot)
             <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
                 <p>
-                    <strong>{{ $slot['start_time'] }} - {{ $slot['end_time'] }}</strong>
+                    <button class="btn" style="margin-bottom:10px;">
+                        {{ $slot['start_time'] }} - {{ $slot['end_time'] }}
+                    </button>
                 </p>
 
                 <form action="{{ route('reservations.store') }}" method="POST">

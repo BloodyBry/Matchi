@@ -172,6 +172,11 @@
             font-size: 14px;
         }
 
+        .card:hover {
+            transform: translateY(-3px);
+            transition: 0.2s;
+        }
+
         @media (max-width: 700px) {
             nav {
                 flex-direction: column;
