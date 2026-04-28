@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="card">
+
+    @if($field->image)
+        <img src="{{ asset('storage/' . $field->image) }}"
+            style="width:100%;height:280px;object-fit:cover;border-radius:18px;margin-bottom:20px;">
+    @else
+        <div style="width:100%;height:280px;background:#e5e7eb;border-radius:18px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;color:#6b7280;">
+            Image terrain
+        </div>
+    @endif
+
     <h2>{{ $field->name }}</h2>
     <p><strong>Centre :</strong> {{ $field->center->name }}</p>
     <p><strong>Ville :</strong> {{ $field->center->city }}</p>

@@ -6,8 +6,18 @@
     <a href="{{ route('manager.fields.create') }}" class="btn">Ajouter un terrain</a>
 </div>
 
+<div class="grid">
 @forelse($fields as $field)
     <div class="card">
+        @if($field->image)
+            <img src="{{ asset('storage/' . $field->image) }}"
+                 style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:15px;">
+        @else
+            <div style="width:100%;height:180px;background:#e5e7eb;border-radius:14px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#6b7280;">
+                Image terrain
+            </div>
+        @endif
+
         <h3>{{ $field->name }}</h3>
         <p><strong>Centre :</strong> {{ $field->center->name }}</p>
         <p><strong>Sport :</strong> {{ $field->sport->name }}</p>
@@ -28,4 +38,5 @@
         <p>Aucun terrain trouvé.</p>
     </div>
 @endforelse
+</div>
 @endsection

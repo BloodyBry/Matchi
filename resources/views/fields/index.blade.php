@@ -5,13 +5,13 @@
 <div class="card">
     <h2>Trouver un terrain</h2>
 
-    <form method="GET" class="grid">
+    <form method="GET" action="{{ route('fields.index') }}" class="grid">
         <div>
             <label>Sport</label>
             <select name="sport_id">
                 <option value="">Tous</option>
                 @foreach($sports as $sport)
-                    <option value="{{ $sport->id }}">
+                    <option value="{{ $sport->id }}" {{ request('sport_id') == $sport->id ? 'selected' : '' }}>
                         {{ $sport->name }}
                     </option>
                 @endforeach
@@ -20,7 +20,7 @@
 
         <div>
             <label>Ville</label>
-            <input type="text" name="city" placeholder="Ex: Casablanca">
+            <input type="text" name="city" placeholder="Ex: Casablanca" value="{{ request('city') }}">
         </div>
 
         <div style="display:flex; align-items:flex-end;">
@@ -32,6 +32,15 @@
 <div class="grid">
 @forelse($fields as $field)
     <div class="card">
+        @if($field->image)
+            <img src="{{ asset('storage/' . $field->image) }}"
+                 style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:15px;">
+        @else
+            <div style="width:100%;height:180px;background:#e5e7eb;border-radius:14px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#6b7280;">
+                Image terrain
+            </div>
+        @endif
+
         <h3>{{ $field->name }}</h3>
 
         <span class="badge">{{ $field->sport->name }}</span>

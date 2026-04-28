@@ -8,7 +8,7 @@
         <p>Vous devez d’abord créer un centre sportif.</p>
         <a href="{{ route('manager.center.create') }}" class="btn">Créer un centre</a>
     @else
-        <form action="{{ route('manager.fields.store') }}" method="POST">
+        <form action="{{ route('manager.fields.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <label>Centre</label>
@@ -36,6 +36,9 @@
 
             <label>Capacité</label>
             <input type="number" name="capacity" value="{{ old('capacity') }}">
+
+            <label>Image du terrain</label>
+            <input type="file" name="image">
 
             <label>Statut</label>
             <select name="status">

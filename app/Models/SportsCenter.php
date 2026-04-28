@@ -13,6 +13,7 @@ class SportsCenter extends Model
         'address',
         'description',
         'phone',
+        'image',
         'opening_time',
         'closing_time',
         'status',

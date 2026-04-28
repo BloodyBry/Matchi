@@ -4,8 +4,13 @@
 <div class="card">
     <h2>Modifier le terrain</h2>
 
-    <form action="{{ route('manager.fields.update', $field->id) }}" method="POST">
+    <form action="{{ route('manager.fields.update', $field->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+
+        @if($field->image)
+            <img src="{{ asset('storage/' . $field->image) }}"
+                 style="width:220px;height:140px;object-fit:cover;border-radius:14px;margin-bottom:15px;">
+        @endif
 
         <label>Centre</label>
         <select name="center_id">
@@ -36,6 +41,9 @@
 
         <label>Capacité</label>
         <input type="number" name="capacity" value="{{ old('capacity', $field->capacity) }}">
+
+        <label>Changer l’image du terrain</label>
+        <input type="file" name="image">
 
         <label>Statut</label>
         <select name="status">

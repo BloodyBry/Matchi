@@ -7,6 +7,7 @@ use App\Models\Field;
 use App\Models\Sport;
 use App\Models\SportsCenter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FieldController extends Controller
 {
@@ -43,12 +44,19 @@ class FieldController extends Controller
             'description' => 'nullable|string',
             'price_per_hour' => 'required|numeric|min:0',
             'capacity' => 'nullable|integer|min:1',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'status' => 'required|in:available,maintenance,unavailable',
         ]);
 
         $center = SportsCenter::where('id', $request->center_id)
             ->where('manager_id', $managerId)
             ->firstOrFail();
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('fields', 'public');
+        }
 
         Field::create([
             'center_id' => $center->id,
@@ -57,10 +65,13 @@ class FieldController extends Controller
             'description' => $request->description,
             'price_per_hour' => $request->price_per_hour,
             'capacity' => $request->capacity,
+            'image' => $imagePath,
             'status' => $request->status,
         ]);
 
-        return redirect()->route('manager.fields.index')->with('success', 'Terrain ajouté avec succès.');
+        return redirect()
+            ->route('manager.fields.index')
+            ->with('success', 'Terrain ajouté avec succès.');
     }
 
     public function edit($id)
@@ -90,12 +101,23 @@ class FieldController extends Controller
             'description' => 'nullable|string',
             'price_per_hour' => 'required|numeric|min:0',
             'capacity' => 'nullable|integer|min:1',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'status' => 'required|in:available,maintenance,unavailable',
         ]);
 
         $center = SportsCenter::where('id', $request->center_id)
             ->where('manager_id', session('user_id'))
             ->firstOrFail();
+
+        $imagePath = $field->image;
+
+        if ($request->hasFile('image')) {
+            if ($field->image) {
+                Storage::disk('public')->delete($field->image);
+            }
+
+            $imagePath = $request->file('image')->store('fields', 'public');
+        }
 
         $field->update([
             'center_id' => $center->id,
@@ -104,10 +126,13 @@ class FieldController extends Controller
             'description' => $request->description,
             'price_per_hour' => $request->price_per_hour,
             'capacity' => $request->capacity,
+            'image' => $imagePath,
             'status' => $request->status,
         ]);
 
-        return redirect()->route('manager.fields.index')->with('success', 'Terrain mis à jour avec succès.');
+        return redirect()
+            ->route('manager.fields.index')
+            ->with('success', 'Terrain mis à jour avec succès.');
     }
 
     public function destroy($id)
@@ -117,8 +142,14 @@ class FieldController extends Controller
             })
             ->findOrFail($id);
 
+        if ($field->image) {
+            Storage::disk('public')->delete($field->image);
+        }
+
         $field->delete();
 
-        return redirect()->route('manager.fields.index')->with('success', 'Terrain supprimé avec succès.');
+        return redirect()
+            ->route('manager.fields.index')
+            ->with('success', 'Terrain supprimé avec succès.');
     }
 }

@@ -4,7 +4,7 @@
 <div class="card">
     <h2>Ajouter un centre sportif</h2>
 
-    <form action="{{ route('manager.center.store') }}" method="POST">
+    <form action="{{ route('manager.center.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <label>Nom</label>
@@ -21,6 +21,9 @@
 
         <label>Téléphone</label>
         <input type="text" name="phone" value="{{ old('phone') }}">
+
+        <label>Image du centre</label>
+        <input type="file" name="image">
 
         <label>Heure d'ouverture</label>
         <input type="time" name="opening_time" value="{{ old('opening_time') }}">
