@@ -1,42 +1,60 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card">
-    <h2>Modifier le centre</h2>
+<div style="max-width:600px;margin:0 auto;">
+    <div class="page-header" style="margin-bottom:20px;">
+        <div>
+            <p class="section-label"><x-icon name="building" :size="13" /> Gestion</p>
+            <h2>Modifier le centre</h2>
+        </div>
+        <a href="{{ route('manager.center.index') }}" class="btn btn-outline btn-sm"><x-icon name="arrow-right" :size="13" style="transform:rotate(180deg)" /> Retour</a>
+    </div>
 
-    <form action="{{ route('manager.center.update', $center->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-
+    <div class="card">
         @if($center->image)
             <img src="{{ asset('storage/' . $center->image) }}"
-                 style="width:220px;height:140px;object-fit:cover;border-radius:14px;margin-bottom:15px;">
+                 style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:20px;">
         @endif
 
-        <label>Nom</label>
-        <input type="text" name="name" value="{{ old('name', $center->name) }}">
+        <form action="{{ route('manager.center.update', $center->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <label>Ville</label>
-        <input type="text" name="city" value="{{ old('city', $center->city) }}">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" value="{{ old('name', $center->name) }}">
 
-        <label>Adresse</label>
-        <input type="text" name="address" value="{{ old('address', $center->address) }}">
+            <div class="grid-2">
+                <div>
+                    <label for="city"><x-icon name="map-pin" :size="14" /> Ville</label>
+                    <input type="text" id="city" name="city" value="{{ old('city', $center->city) }}">
+                </div>
+                <div>
+                    <label for="phone"><x-icon name="phone" :size="14" /> Téléphone</label>
+                    <input type="text" id="phone" name="phone" value="{{ old('phone', $center->phone) }}">
+                </div>
+            </div>
 
-        <label>Description</label>
-        <textarea name="description">{{ old('description', $center->description) }}</textarea>
+            <label for="address">Adresse</label>
+            <input type="text" id="address" name="address" value="{{ old('address', $center->address) }}">
 
-        <label>Téléphone</label>
-        <input type="text" name="phone" value="{{ old('phone', $center->phone) }}">
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{ old('description', $center->description) }}</textarea>
 
-        <label>Changer l’image du centre</label>
-        <input type="file" name="image">
+            <label for="image">Changer l'image du centre</label>
+            <input type="file" id="image" name="image">
 
-        <label>Heure d'ouverture</label>
-        <input type="time" name="opening_time" value="{{ old('opening_time', $center->opening_time) }}">
+            <div class="grid-2">
+                <div>
+                    <label for="opening_time"><x-icon name="clock" :size="14" /> Heure d'ouverture</label>
+                    <input type="time" id="opening_time" name="opening_time" value="{{ old('opening_time', $center->opening_time) }}">
+                </div>
+                <div>
+                    <label for="closing_time"><x-icon name="clock" :size="14" /> Heure de fermeture</label>
+                    <input type="time" id="closing_time" name="closing_time" value="{{ old('closing_time', $center->closing_time) }}">
+                </div>
+            </div>
 
-        <label>Heure de fermeture</label>
-        <input type="time" name="closing_time" value="{{ old('closing_time', $center->closing_time) }}">
-
-        <button type="submit" class="btn">Mettre à jour</button>
-    </form>
+            <button type="submit" class="btn" style="width:100%;justify-content:center;"><x-icon name="save" :size="15" /> Mettre à jour</button>
+        </form>
+    </div>
 </div>
 @endsection
