@@ -19,12 +19,27 @@ class AdminDashboardController extends Controller
         $reservationsCount = Reservation::count();
         $sportsCount = Sport::count();
 
+        $activeUsers = User::where('status', 'active')->count();
+        $pendingCenters = SportsCenter::where('status', 'pending')->count();
+        $todayReservations = Reservation::where('reservation_date', now()->toDateString())->count();
+
+        $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
+        $recentReservations = Reservation::with(['user', 'field'])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
         return view('admin.dashboard', compact(
             'usersCount',
             'centersCount',
             'fieldsCount',
             'reservationsCount',
-            'sportsCount'
+            'sportsCount',
+            'activeUsers',
+            'pendingCenters',
+            'todayReservations',
+            'recentUsers',
+            'recentReservations'
         ));
     }
 }

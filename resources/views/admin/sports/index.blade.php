@@ -3,37 +3,46 @@
 @section('content')
 
 <div class="page-header">
-    <div>
-        <p class="section-label"><x-icon name="football" :size="13" /> Administration</p>
-        <h2>Gestion des sports</h2>
-    </div>
-    <a href="{{ route('admin.sports.create') }}" class="btn"><x-icon name="plus" :size="15" /> Ajouter un sport</a>
+    <h2>Sports</h2>
+    <a href="{{ route('admin.sports.create') }}" class="btn btn-sm"><x-icon name="plus" :size="14" /> Ajouter</a>
 </div>
 
-@forelse($sports as $sport)
-    <div class="card data-row">
-        <div class="icon-box icon-box--md icon-box--green">
-            <x-icon name="football" :size="22" />
-        </div>
-        <div class="data-row__info">
-            <div class="data-row__name">{{ $sport->name }}</div>
-            <div class="data-row__sub">{{ $sport->description }}</div>
-        </div>
-        <div class="data-row__actions">
-            <a href="{{ route('admin.sports.edit', $sport->id) }}" class="btn btn-sm btn-outline"><x-icon name="edit" :size="13" /> Modifier</a>
-            <form action="{{ route('admin.sports.delete', $sport->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce sport ?')"><x-icon name="trash" :size="13" /></button>
-            </form>
-        </div>
-    </div>
-@empty
-    <div class="card empty-state">
-        <div class="empty-state__icon"><x-icon name="football" :size="28" /></div>
-        <h3>Aucun sport trouvé</h3>
-        <p>Ajoutez votre premier sport pour commencer.</p>
-        <a href="{{ route('admin.sports.create') }}" class="btn"><x-icon name="plus" :size="15" /> Ajouter un sport</a>
-    </div>
-@endforelse
+@if($sports->count())
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th style="text-align:right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($sports as $sport)
+            <tr>
+                <td class="cell-name">{{ $sport->name }}</td>
+                <td class="cell-sub">{{ $sport->description ?? '—' }}</td>
+                <td>
+                    <div class="cell-actions">
+                        <a href="{{ route('admin.sports.edit', $sport->id) }}" class="btn btn-outline btn-sm">Modifier</a>
+                        <form action="{{ route('admin.sports.delete', $sport->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ?')"><x-icon name="trash" :size="14" /></button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@else
+<div class="card empty">
+    <x-icon name="football" :size="32" />
+    <h3>Aucun sport</h3>
+    <p>Ajoutez votre premier sport pour commencer.</p>
+    <a href="{{ route('admin.sports.create') }}" class="btn btn-sm"><x-icon name="plus" :size="14" /> Ajouter</a>
+</div>
+@endif
 
 @endsection
