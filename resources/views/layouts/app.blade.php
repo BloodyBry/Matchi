@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matchi — Réservation de terrains sportifs</title>
+    <title>Matchi</title>
     <meta name="description" content="Matchi, la plateforme moderne de réservation de terrains sportifs. Football, padel, tennis et plus.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -321,13 +321,13 @@
         }
         .container.dashboard-bg::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
-            left: -24px;
-            right: -24px;
+            left: 0;
+            right: 0;
             bottom: 0;
-            background: url('/images/dashboards_img.jpg') center/cover no-repeat fixed;
-            opacity: 0.65;
+            background: url('/images/dash2.jfif') center/cover no-repeat;
+            opacity: 0.75;
             pointer-events: none;
             z-index: 0;
         }

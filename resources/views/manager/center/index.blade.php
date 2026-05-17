@@ -8,40 +8,51 @@
 </div>
 
 @if($centers->count())
-<div class="table-wrap">
-    <table>
-        <thead>
-            <tr>
-                <th>Centre</th>
-                <th>Téléphone</th>
-                <th>Horaires</th>
-                <th>Statut</th>
-                <th style="text-align:right;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($centers as $center)
-            <tr>
-                <td>
-                    <div class="cell-name">{{ $center->name }}</div>
-                    <div class="cell-sub">{{ $center->city }} · {{ $center->address }}</div>
-                </td>
-                <td>{{ $center->phone }}</td>
-                <td>{{ $center->opening_time }} – {{ $center->closing_time }}</td>
-                <td>
-                    @if($center->status === 'active')
-                        <span class="badge badge-green">Actif</span>
-                    @else
-                        <span class="badge badge-red">Inactif</span>
-                    @endif
-                </td>
-                <td style="text-align:right;">
-                    <a href="{{ route('manager.center.edit', $center->id) }}" class="btn btn-outline btn-sm">Modifier</a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr));">
+    @foreach($centers as $center)
+    <div class="card" style="padding:0;overflow:hidden;">
+        {{-- Center image --}}
+        <div style="position:relative;height:180px;background:var(--border-light);">
+            @if($center->image)
+                <img src="{{ asset('storage/' . $center->image) }}" alt="{{ $center->name }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+            @else
+                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ecfdf5,#d1fae5);">
+                    <x-icon name="building" :size="40" stroke="#059669" />
+                </div>
+            @endif
+            @if($center->status === 'active')
+                <span class="badge badge-green" style="position:absolute;top:12px;right:12px;">Actif</span>
+            @elseif($center->status === 'pending')
+                <span class="badge badge-orange" style="position:absolute;top:12px;right:12px;">En attente</span>
+            @endif
+        </div>
+
+        {{-- Center info --}}
+        <div style="padding:20px;">
+            <h3 style="margin-bottom:4px;font-size:17px;">{{ $center->name }}</h3>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:flex;align-items:center;gap:4px;">
+                <x-icon name="map-pin" :size="13" stroke="#9ca3af" /> {{ $center->city }} · {{ $center->address }}
+            </p>
+
+            <div style="display:flex;gap:16px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);">
+                @if($center->phone)
+                <span style="display:flex;align-items:center;gap:4px;">
+                    <x-icon name="phone" :size="13" stroke="#9ca3af" /> {{ $center->phone }}
+                </span>
+                @endif
+                <span style="display:flex;align-items:center;gap:4px;">
+                    <x-icon name="clock" :size="13" stroke="#9ca3af" /> {{ $center->opening_time }} – {{ $center->closing_time }}
+                </span>
+            </div>
+
+            <div style="display:flex;gap:8px;">
+                <a href="{{ route('manager.center.edit', $center->id) }}" class="btn btn-outline btn-sm" style="flex:1;justify-content:center;">
+                    <x-icon name="edit" :size="13" /> Modifier
+                </a>
+            </div>
+        </div>
+    </div>
+    @endforeach
 </div>
 @else
 <div class="card empty">

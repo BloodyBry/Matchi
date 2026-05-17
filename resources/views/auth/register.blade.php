@@ -51,11 +51,11 @@
                 <div class="form-row">
                     <div>
                         <label for="first_name">Prénom</label>
-                        <input type="text" id="first_name" name="first_name" placeholder="Yassine" value="{{ old('first_name') }}" required>
+                        <input type="text" id="first_name" name="first_name" placeholder="Adnane" value="{{ old('first_name') }}" required>
                     </div>
                     <div>
                         <label for="last_name">Nom</label>
-                        <input type="text" id="last_name" name="last_name" placeholder="Alami" value="{{ old('last_name') }}" required>
+                        <input type="text" id="last_name" name="last_name" placeholder="EL YAZIDI" value="{{ old('last_name') }}" required>
                     </div>
                 </div>
 

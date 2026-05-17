@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <div>
-        <h2>Bienvenue 👋</h2>
+        <h2>Bienvenue</h2>
         <p class="page-subtitle">Voici un aperçu de votre activité sur Matchi.</p>
     </div>
     <a href="/fields" class="btn btn-sm">
