@@ -1,239 +1,97 @@
-<div align="center">
+# Matchi
 
-# ⚽ Matchi
+Matchi is a comprehensive SaaS platform built with Laravel that connects sports enthusiasts with sports facility managers. It simplifies the process of finding, booking, and managing sports fields.
 
-**A modern SaaS platform for sports facility discovery, booking, and management.**
+## Features
 
-[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
+The platform is divided into three distinct user roles, each with its own dedicated dashboard and capabilities:
 
-*Connecting athletes with sports facilities — seamlessly.*
+### For Users (Athletes)
+- **Discover Facilities**: Browse available sports centers and fields in your area.
+- **Easy Booking**: View real-time availability and book fields instantly.
+- **Reservation Management**: Track your upcoming matches and cancel if necessary.
+- **Review System**: Leave feedback and rate fields after your game.
 
-</div>
+### For Facility Managers
+- **Center Management**: Create and manage your sports center profile.
+- **Field Configuration**: Add multiple fields, specifying the sport type, price, and surface type.
+- **Schedule Management**: Set specific operating hours and availability slots for each field.
+- **Booking Dashboard**: Monitor reservations and keep track of your facility's usage.
 
----
+### For Administrators
+- **Platform Oversight**: Full visibility over all platform reservations.
+- **User Management**: Monitor, suspend, or ban users as needed.
+- **Center Verification**: Approve or reject sports centers to maintain platform quality.
+- **Sport Categories**: Manage the list of available sports on the platform.
 
-## 📖 Overview
+## Technology Stack
 
-**Matchi** is a full-stack web application built with **Laravel 13** that bridges the gap between sports enthusiasts and facility managers. Athletes can discover, compare, and instantly book sports fields, while managers get a powerful dashboard to manage their centers, configure fields, and monitor reservations — all from one unified platform.
+- **Backend Framework**: [Laravel](https://laravel.com/) (PHP)
+- **Frontend**: Blade Templating Engine + Vanilla CSS
+- **Database**: MySQL / SQLite (configurable via `.env`)
 
-The platform enforces a clean **three-role architecture** (`user`, `manager`, `admin`) to provide a tailored experience for every stakeholder.
+## Getting Started (Local Development)
 
----
-
-## ✨ Features
-
-### 🧑 For Athletes (Users)
-| Feature | Description |
-|---|---|
-| 🔍 Discover Facilities | Browse sports centers and available fields by sport type |
-| 📅 Real-time Booking | Check live availability and reserve a field instantly |
-| 🎟️ Reservation Management | View, track, and cancel upcoming bookings |
-| ⭐ Review System | Rate and review fields to help the community |
-
-### 🏟️ For Facility Managers
-| Feature | Description |
-|---|---|
-| 🏢 Center Profile | Create and manage your sports center's public profile |
-| ⚽ Field Configuration | Add multiple fields with sport type, price/hour, capacity, and surface details |
-| 🕐 Schedule Management | Define operating hours and availability windows per field |
-| 📊 Booking Dashboard | Monitor all incoming reservations and facility usage at a glance |
-
-### 🛡️ For Administrators
-| Feature | Description |
-|---|---|
-| 📋 Platform Oversight | Full visibility over all reservations platform-wide |
-| 👥 User Management | Suspend or ban users to enforce platform policies |
-| ✅ Center Verification | Approve or reject sports center registrations for quality control |
-| 🏅 Sport Categories | Add and manage the list of sports offered on the platform |
-
----
-
-## 🗂️ Data Model
-
-```
-User ──────────────────────────────────────────────────────────┐
- │ role: user | manager | admin                                │
- │ status: active | suspended | banned                        │
- │                                                             │
- ├──(manager_id)──► SportsCenter ──────────────────────────────┤
- │                   └──► Field ──────────────────────────────  │
- │                         │ sport_id ──► Sport               │
- │                         ├──► FieldSchedule                 │
- │                         ├──► Reservation ◄── User          │
- │                         └──► Review ◄── User               │
- └─────────────────────────────────────────────────────────────┘
-```
-
-**Core Entities:**
-- **`User`** — Authenticated account with one of three roles (`user`, `manager`, `admin`).
-- **`SportsCenter`** — A physical facility owned by a manager. Subject to admin approval.
-- **`Sport`** — A sport category (e.g., Football, Tennis) managed by admins.
-- **`Field`** — A bookable surface within a sports center, linked to a specific sport.
-- **`FieldSchedule`** — Time slots that define a field's operating availability.
-- **`Reservation`** — A confirmed booking linking a user to a specific field and time slot.
-- **`Review`** — A post-game rating and comment left by a user for a field.
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technology |
-|---|---|
-| **Backend** | [Laravel 13](https://laravel.com/) (PHP 8.3+) |
-| **Templating** | Blade Template Engine |
-| **Frontend** | Vanilla CSS + [Vite](https://vitejs.dev/) |
-| **Database** | MySQL (configurable to SQLite via `.env`) |
-| **Auth** | Laravel's built-in session-based authentication |
-| **Testing** | PHPUnit 12 |
-| **Dev Tooling** | Laravel Pail (log viewer), Laravel Pint (code style) |
-
----
-
-## 🚀 Getting Started
+Follow these steps to set up the project locally.
 
 ### Prerequisites
+- PHP >= 8.2
+- Composer
+- Node.js & npm
+- MySQL or SQLite
 
-Make sure you have the following installed before proceeding:
+### Installation
 
-- **PHP** >= 8.3
-- **Composer** >= 2.x
-- **Node.js** >= 18.x & **npm**
-- **MySQL** (or SQLite for quick local setup)
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd Matchi
+   ```
 
----
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-### ⚡ Quick Setup (One Command)
+3. **Install Frontend dependencies**
+   ```bash
+   npm install
+   ```
 
-The project includes a `composer setup` script that automates the entire installation:
+4. **Environment Setup**
+   Copy the example environment file and configure your database settings.
+   ```bash
+   cp .env.example .env
+   ```
+   *Make sure to update the `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` variables in your new `.env` file.*
 
-```bash
-git clone <your-repo-url> matchi
-cd matchi
-composer run setup
-```
+5. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
 
-> **Note:** Before running, make sure to configure your database credentials in `.env` (created automatically from `.env.example`).
+6. **Run Migrations & Seeders**
+   This will set up your database tables and populate them with initial data (like sports categories and an admin user).
+   ```bash
+   php artisan migrate --seed
+   ```
 
----
+7. **Start the Development Servers**
+   You will need two terminal windows to run both the Laravel backend and the Vite frontend compiler.
+   
+   Terminal 1:
+   ```bash
+   php artisan serve
+   ```
+   
+   Terminal 2:
+   ```bash
+   npm run dev
+   ```
 
-### 🔧 Manual Installation
+8. **Access the Application**
+   Open your browser and navigate to `http://localhost:8000`.
 
-Follow these steps for a step-by-step setup:
+## License
 
-**1. Clone the repository**
-```bash
-git clone <your-repo-url> matchi
-cd matchi
-```
-
-**2. Install PHP dependencies**
-```bash
-composer install
-```
-
-**3. Install frontend dependencies**
-```bash
-npm install
-```
-
-**4. Set up environment variables**
-```bash
-cp .env.example .env
-```
-Open `.env` and configure your database connection:
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=matchi
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-**5. Generate the application key**
-```bash
-php artisan key:generate
-```
-
-**6. Run database migrations and seeders**
-
-This creates all tables and populates them with initial data (sport categories, a default admin account, etc.).
-```bash
-php artisan migrate --seed
-```
-
-**7. Start the development servers**
-
-Run all services (Laravel, Vite, queue worker, and log viewer) with a single command:
-```bash
-composer run dev
-```
-
-Or start them individually in separate terminals:
-```bash
-# Terminal 1 — Laravel backend
-php artisan serve
-
-# Terminal 2 — Vite frontend compiler (hot reload)
-npm run dev
-```
-
-**8. Open the application**
-
-Navigate to [http://localhost:8000](http://localhost:8000) in your browser.
-
----
-
-### 🧪 Running Tests
-
-```bash
-composer run test
-# or
-php artisan test
-```
-
----
-
-## 📁 Project Structure
-
-```
-matchi/
-├── app/
-│   ├── Http/
-│   │   └── Controllers/
-│   │       ├── Admin/          # Admin-only controllers
-│   │       ├── Manager/        # Manager-only controllers
-│   │       └── Auth/           # Authentication controllers
-│   └── Models/                 # Eloquent models
-├── database/
-│   ├── migrations/             # Database schema
-│   └── seeders/                # Initial data seeders
-├── resources/
-│   └── views/                  # Blade templates (admin, manager, user)
-├── routes/
-│   └── web.php                 # Application routes
-└── public/                     # Publicly accessible assets
-```
-
----
-
-## 🪪 Default Credentials
-
-After seeding, you can log in with the default admin account:
-
-| Field | Value |
-|---|---|
-| **Email** | `admin@matchi.com` |
-| **Password** | `password` |
-
-> ⚠️ **Change the default credentials immediately** in any staging or production environment.
-
----
-
-## 📜 License
-
-This project is open-sourced software licensed under the [MIT License](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
