@@ -1,58 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Matchi 🏟️
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Matchi is a comprehensive SaaS platform built with Laravel that connects sports enthusiasts with sports facility managers. It simplifies the process of finding, booking, and managing sports fields.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The platform is divided into three distinct user roles, each with its own dedicated dashboard and capabilities:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👤 For Users (Athletes)
+- **Discover Facilities**: Browse available sports centers and fields in your area.
+- **Easy Booking**: View real-time availability and book fields instantly.
+- **Reservation Management**: Track your upcoming matches and cancel if necessary.
+- **Review System**: Leave feedback and rate fields after your game.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🏢 For Facility Managers
+- **Center Management**: Create and manage your sports center profile.
+- **Field Configuration**: Add multiple fields, specifying the sport type, price, and surface type.
+- **Schedule Management**: Set specific operating hours and availability slots for each field.
+- **Booking Dashboard**: Monitor reservations and keep track of your facility's usage.
 
-## Learning Laravel
+### 👑 For Administrators
+- **Platform Oversight**: Full visibility over all platform reservations.
+- **User Management**: Monitor, suspend, or ban users as needed.
+- **Center Verification**: Approve or reject sports centers to maintain platform quality.
+- **Sport Categories**: Manage the list of available sports on the platform.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Technology Stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend Framework**: [Laravel](https://laravel.com/) (PHP)
+- **Frontend**: Blade Templating Engine + Vanilla CSS
+- **Database**: MySQL / SQLite (configurable via `.env`)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 💻 Getting Started (Local Development)
 
-## Agentic Development
+Follow these steps to set up the project locally.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Prerequisites
+- PHP >= 8.2
+- Composer
+- Node.js & npm
+- MySQL or SQLite
 
-```bash
-composer require laravel/boost --dev
+### Installation
 
-php artisan boost:install
-```
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd Matchi
+   ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-## Contributing
+3. **Install Frontend dependencies**
+   ```bash
+   npm install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Environment Setup**
+   Copy the example environment file and configure your database settings.
+   ```bash
+   cp .env.example .env
+   ```
+   *Make sure to update the `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` variables in your new `.env` file.*
 
-## Code of Conduct
+5. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. **Run Migrations & Seeders**
+   This will set up your database tables and populate them with initial data (like sports categories and an admin user).
+   ```bash
+   php artisan migrate --seed
+   ```
 
-## Security Vulnerabilities
+7. **Start the Development Servers**
+   You will need two terminal windows to run both the Laravel backend and the Vite frontend compiler.
+   
+   Terminal 1:
+   ```bash
+   php artisan serve
+   ```
+   
+   Terminal 2:
+   ```bash
+   npm run dev
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8. **Access the Application**
+   Open your browser and navigate to `http://localhost:8000`.
 
-## License
+## 📄 License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
